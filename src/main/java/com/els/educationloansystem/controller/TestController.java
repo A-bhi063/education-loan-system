@@ -10,4 +10,10 @@ public class TestController {
     public String test() {
         return "Controller working";
     }
+    @Getmapp
+    public void check()
+    {
+    	
+    	
+    }
 }
