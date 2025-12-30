@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.els.educationloansystem.dto.DocumentDto;
 import com.els.educationloansystem.dto.StudentDto;
 import com.els.educationloansystem.entity.Document;
+import com.els.educationloansystem.entity.Student;
 import com.els.educationloansystem.service.DocumentService;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,15 +23,20 @@ public class DocumentController {
 
 	@Autowired
 	private DocumentService documentService;
+	
+	@GetMapping("/doc")
+	public String toUploadDocumetnt() {
+		return "UploadDocuments";
+	}
 
 	@PostMapping("/upload")
 	public String uploadDocument(@RequestParam("file") MultipartFile file,
 			@RequestParam("documentType") String documentType, HttpSession session) {
 
-//		Student student = (Student) session.getAttribute("loggedInStudent");
+		Student student = (Student) session.getAttribute("loggedInStudent");
 
 		DocumentDto dto = new DocumentDto();
-//		dto.setStudentId(student.getId());
+		dto.setStudentId(student.getStudentId());
 		dto.setDocumentType(documentType);
 
 		documentService.uploadDocument(dto, file);
@@ -40,8 +46,8 @@ public class DocumentController {
 
 	@GetMapping("/status")
 	public String documentStatus(HttpSession session, Model model) {
-//		Student student = (Student) session.getAttribute("loggedInStudent");
-//		model.addAttribute("documents", documentService.getDocumentsByStudent(student.getId()));
+		Student student = (Student) session.getAttribute("loggedInStudent");
+		model.addAttribute("documents", documentService.getDocumentsByStudent(student.getStudentId()));
 		return "DocumentStatus";
 	}
 }
