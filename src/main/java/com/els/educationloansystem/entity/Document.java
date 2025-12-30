@@ -18,12 +18,13 @@ public class Document {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id ;
-//	private Long studentID;
+	private Long studentId;
 	private String documentType;
 	private String fileName;
 	private String filePath;
 	private String status;
 	private String remarks;
 	private LocalDateTime uploadedAt;
+	
 
 }
