@@ -9,7 +9,7 @@ public class DocumentMapper {
 
         Document doc = new Document();
         doc.setId(dto.getId());
-        doc.setStudentID(dto.getStudentId());
+        doc.setStudentId(dto.getStudentId());
         doc.setDocumentType(dto.getDocumentType());
         doc.setStatus(dto.getStatus());
         doc.setRemarks(dto.getRemarks());
@@ -22,7 +22,7 @@ public class DocumentMapper {
 
         DocumentDto dto = new DocumentDto();
         dto.setId(doc.getId());
-        dto.setStudentId(doc.getStudentID());
+        dto.setStudentId(doc.getStudentId());
         dto.setDocumentType(doc.getDocumentType());
         dto.setStatus(doc.getStatus());
         dto.setRemarks(doc.getRemarks());
