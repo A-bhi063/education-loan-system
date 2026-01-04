@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/documents")
 public class DocumentController {
-
+    
 	@Autowired
 	private DocumentService documentService;
 	
@@ -36,7 +36,7 @@ public class DocumentController {
 		Student student = (Student) session.getAttribute("loggedInStudent");
 
 		DocumentDto dto = new DocumentDto();
-		dto.setStudentId(student.getStudentId());
+		dto.setStudentId(student.getId());
 		dto.setDocumentType(documentType);
 
 		documentService.uploadDocument(dto, file);
@@ -47,7 +47,7 @@ public class DocumentController {
 	@GetMapping("/status")
 	public String documentStatus(HttpSession session, Model model) {
 		Student student = (Student) session.getAttribute("loggedInStudent");
-		model.addAttribute("documents", documentService.getDocumentsByStudent(student.getStudentId()));
+		model.addAttribute("documents", documentService.getDocumentsByStudent(student.getId()));
 		return "DocumentStatus";
 	}
 }
