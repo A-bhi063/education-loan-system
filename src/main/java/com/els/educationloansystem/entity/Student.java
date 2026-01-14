@@ -19,7 +19,7 @@ public class Student {
 	private Long id;
 	private String name;
 	private String password;
-	private String mobile;
+	
 	@Column(nullable = false, unique = true)
 	private String email;
 	private String role;
