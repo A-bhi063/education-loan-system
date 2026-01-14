@@ -2,6 +2,8 @@ package com.els.educationloansystem.jwt;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -16,9 +18,15 @@ public class JwtUtil {
     private final String SECRET = "mysecretkeymysecretkeymysecretkey";
 
     // Generate token (subject = email)
-    public String generateToken(String email) {
+  
+    public String generateToken(String email, String role) {
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+
         return Jwts.builder()
-                .setSubject(email)
+                .setClaims(claims)
+                .setSubject(email) // ✅ EMAIL as subject
                 .setIssuedAt(new Date())
                 .setExpiration(
                         new Date(System.currentTimeMillis() + 1000 * 60 * 10)
@@ -26,6 +34,7 @@ public class JwtUtil {
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
+
 
     // Extract username/email from token
     public String extractUsername(String token) {
@@ -49,6 +58,21 @@ public class JwtUtil {
     private Key getKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
+    
+    public String extractRole(String token) {
+        return parse(token)
+                .getBody()
+                .get("role", String.class);
+    }
+    
+    public boolean isTokenExpired(String token) {
+        return parse(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date());
+    }
+
+
+   
+
 }
-
-
