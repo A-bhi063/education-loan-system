@@ -1,22 +1,29 @@
+
 package com.els.educationloansystem.controller;
 
-import com.els.educationloansystem.entity.Student;
-import com.els.educationloansystem.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.els.educationloansystem.dto.StudentDto;
+import com.els.educationloansystem.entity.Student;
 import com.els.educationloansystem.jwt.JWTRequest;
 import com.els.educationloansystem.jwt.JWTResponse;
 import com.els.educationloansystem.jwt.JwtUtil;
+import com.els.educationloansystem.repository.StudentRepository;
 import com.els.educationloansystem.service.StudentService;
 
 @RestController
 @CrossOrigin("*")
+//@CrossOrigin("*")
 @RequestMapping("/api/auth")
 public class StudentController {
 	
@@ -25,11 +32,12 @@ public class StudentController {
 
 	@Autowired
 	private JwtUtil jwtUtil;
-
-	@Autowired
-	private StudentRepository studentRepository;
 	
 	@Autowired StudentService service;
+	
+	@Autowired StudentRepository studentRepository;
+	
+	
 	
 	@PostMapping("/register")
 	public ResponseEntity<?> saveStudent(@RequestBody StudentDto studentDto) {
@@ -52,23 +60,34 @@ public class StudentController {
 	@PostMapping("/login")
 	public JWTResponse login(@RequestBody JWTRequest request) {
 
-		Authentication authentication = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+		
+	    Authentication authentication = authenticationManager
+	            .authenticate(
+	                new UsernamePasswordAuthenticationToken(
+	                    request.getEmail(),
+	                    request.getPassword()
+	                )
+	            );
 
-		if (authentication.isAuthenticated()) {
-			String token = jwtUtil.generateToken(request.getEmail());
-			return new JWTResponse(token);
-		}
+		
+	    if (authentication.isAuthenticated()) {
+	        String token = jwtUtil.generateToken(
+	                request.getEmail(),
+	                "STUDENT"
+	        );
+	        return new JWTResponse(token);
+	    }
 
 		throw new RuntimeException("Invalid username or password");
+	   
 	}
 
 	@GetMapping("/me")
 	public Student getCurrentStudent(Authentication authentication) {
 		String email = authentication.getName();
 		return studentRepository.findByEmail(email).orElseThrow();
+	   
 	}
-
 
 
 

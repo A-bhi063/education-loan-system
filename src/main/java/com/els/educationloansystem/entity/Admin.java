@@ -1,6 +1,6 @@
+
 package com.els.educationloansystem.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,16 +13,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student {
+public class Admin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int adminid ;
 	private String name;
 	private String password;
-	
-	@Column(nullable = false, unique = true)
-	private String email;
 	private String role;
-	
 
 }
